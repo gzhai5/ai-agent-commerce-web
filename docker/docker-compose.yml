@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+
+  backend-server:
+    build: ../backend
+    container_name: backend-server
+    restart: always
+    volumes:
+      - ../backend:/app
+    ports:
+      - 8020:8000
+
+  mcp-server:
+    build: ../mcp
+    container_name: mcp-server
+    restart: always
+    env_file:
+      - ../mcp/.env
+    volumes:
+      - ../mcp:/app
+    ports:
+      - 8018:8000
+    depends_on:
+      - backend-server
+
+  dozzle:
+    container_name: log-viewer
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8080:8080
+
+networks:
+  default:
+    driver: bridge
