@@ -114,7 +114,7 @@ export const ChatWidget = () => {
                 <div className={`w-full h-5/6 min-h-[30rem] min-w-[25rem] min-h-[20rem] items-center justify-center rounded-lg z-10 bg-transport}`}>
 
                     {/* chat area */}
-                    <div className='h-full w-full overflow-y-auto flex flex-col gap-4 px-2'>
+                    <div className='h-full w-full overflow-y-auto flex flex-col gap-4 px-2 relative'>
                         {conversationHistory.map((chat, index) => (
                             <div key={chat.id} className={`chat ${chat.sender !== 'user' ? 'chat-start' : 'chat-end'}`}>
                                 
@@ -129,9 +129,16 @@ export const ChatWidget = () => {
                                 {/* chat bubble */}
                                 <div className={`chat-bubble max-w-[43rem] text-base font-semibold ${chat.sender === 'bot'? 'bg-[#EFE8D4] text-[#5A3E00] pb-8': 'bg-[#5A3E00] text-[#EFE8D4]'}`}>
                                     {chat.content}
-                                </div>
+                                </div>                                
                             </div>
                         ))}
+                        {/* When user's query is pending, show the loading indicator */}
+                        {isLoading && (
+                            <div className="flex items-center justify-start pl-10">
+                                <span className="loading loading-ring loading-xl text-purple-700"></span>
+                                <span className="ml-2 text-lg text-purple-700">Thinking...</span>
+                            </div>
+                        )}
                     </div>
 
                     {/* chat input box */}
